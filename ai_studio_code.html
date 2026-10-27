@@ -1,0 +1,1828 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <!-- Prevents browser referrer headers from blocking public image CDNs on file:/// -->
+  <meta name="referrer" content="no-referrer" />
+  <title>thrift.kick.store | Niche Perfumery Vault & Curated Flacons</title>
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            black: '#000000',
+            white: '#FFFFFF'
+          },
+          fontFamily: {
+            sans: ['"Inter"', '-apple-system', 'BlinkMacSystemFont', 'sans-serif'],
+            mono: ['"JetBrains Mono"', 'ui-monospace', 'monospace']
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    /* Strict Binary Palette: Pure White (#FFFFFF) & Pure Black (#000000) Only */
+    * {
+      border-color: #000000;
+    }
+
+    body, html {
+      background-color: #FFFFFF !important;
+      color: #000000 !important;
+      font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* Bottle Elevation & Soft Ground Shadow */
+    .bottle-shadow {
+      filter: drop-shadow(0 12px 10px rgba(0, 0, 0, 0.12));
+      transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), filter 0.35s ease;
+    }
+    .product-card:hover .bottle-shadow {
+      transform: scale(1.05) translateY(-3px);
+      filter: drop-shadow(0 18px 16px rgba(0, 0, 0, 0.18));
+    }
+
+    /* Minimalist 2-Tone Scrollbar */
+    ::-webkit-scrollbar {
+      width: 4px;
+      height: 4px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #FFFFFF;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #000000;
+    }
+
+    /* Modal Backdrop */
+    .drawer-backdrop {
+      background: rgba(0, 0, 0, 0.65);
+      backdrop-filter: blur(2px);
+    }
+
+    .no-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+    .no-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+
+    /* Binary Range Slider */
+    input[type=range] {
+      -webkit-appearance: none;
+      background: #FFFFFF;
+      border: 1px solid #000000;
+      height: 4px;
+    }
+    input[type=range]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      height: 14px;
+      width: 14px;
+      background: #000000;
+      border: 1px solid #FFFFFF;
+      cursor: pointer;
+    }
+
+    /* Instagram Gradient Ring */
+    .story-ring-gradient {
+      background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+    }
+
+    @keyframes storyProgress {
+      from { width: 0%; }
+      to { width: 100%; }
+    }
+    .story-progress-active {
+      animation: storyProgress 5s linear forwards;
+    }
+  </style>
+</head>
+<body class="bg-white text-black min-h-screen flex flex-col font-sans selection:bg-black selection:text-white">
+
+  <!-- ================= TOP QUERY TICKER ================= -->
+  <aside class="bg-white text-black border-b border-black text-[10px] md:text-[11px] font-normal py-2 px-4 tracking-wider uppercase flex items-center justify-between">
+    <div class="hidden md:flex items-center gap-2 font-mono text-[10px]">
+      <span class="w-1.5 h-1.5 bg-black rounded-full"></span>
+      <span>INDEPENDENT NICHE PARFUM EXCHANGE // BOTTLE & DECANT VAULT</span>
+    </div>
+    <div class="mx-auto md:mx-0 text-center font-mono">
+      AUTHENTICITY INQUIRIES? SEND US A 'HI' ON WHATSAPP AT 8792968173 • <a href="https://api.whatsapp.com" target="_blank" class="font-bold underline ml-1 hover:opacity-70">CLICK HERE</a>
+    </div>
+    <div class="hidden md:block font-mono text-[10px]">100% ESCROW PROTECTED</div>
+  </aside>
+
+  <!-- ================= MAIN HEADER (LOGO GOES HOME) ================= -->
+  <header class="sticky top-0 z-40 bg-black text-white">
+    <div class="max-w-[1520px] mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-16 md:h-[72px]">
+        
+        <!-- Mobile Left: Hamburger Menu -->
+        <div class="flex items-center gap-3 lg:hidden">
+          <button onclick="toggleMobileNav(true)" class="p-1 text-white hover:opacity-80" aria-label="Open Menu">
+            <i data-lucide="menu" class="w-6 h-6"></i>
+          </button>
+        </div>
+
+        <!-- Brand Name & Home Logo: Click Returns to Home Page -->
+        <div class="flex items-center gap-8">
+          <button onclick="goHome()" class="flex items-center gap-2.5 text-left group" title="thrift.kick.store - Return to Home">
+            <div class="border border-white p-1 text-white group-hover:bg-white group-hover:text-black transition">
+              <i data-lucide="droplet" class="w-4 h-4"></i>
+            </div>
+            <div class="flex flex-col">
+              <span class="text-sm md:text-base font-semibold lowercase tracking-widest text-white leading-none">
+                thrift<span class="font-normal opacity-75">.kick</span><span class="font-mono text-xs">.store</span>
+              </span>
+              <span class="text-[8px] font-mono tracking-widest text-white/60 uppercase mt-0.5">Niche Parfum & Decant Vault</span>
+            </div>
+          </button>
+
+          <!-- Desktop Navigation -->
+          <nav class="hidden lg:flex items-center gap-6 text-[13px] font-semibold uppercase tracking-wider text-white">
+            <button onclick="quickFilterMenu('ALL')" class="hover:text-neutral-300 transition">ALL VAULT</button>
+            <button onclick="quickFilterNote('Oud')" class="hover:text-neutral-300 transition">OUD & WOOD</button>
+            <button onclick="quickFilterNote('Vanilla')" class="hover:text-neutral-300 transition">GOURMAND</button>
+            <button onclick="quickFilterTier('BRAND_NEW')" class="hover:text-neutral-300 transition flex items-center gap-1.5">
+              <span>SEALED FLACONS (10/10)</span>
+              <span class="border border-white/60 text-[9px] px-1 font-mono">NEW</span>
+            </button>
+            <button onclick="quickFilterTier('PRE_LOVED')" class="hover:text-neutral-300 transition flex items-center gap-1.5">
+              <span>PARTIALS & VINTAGE</span>
+              <span class="border border-white/60 text-[9px] px-1 font-mono">GRADED</span>
+            </button>
+            <button onclick="quickFilterMenu('SALE')" class="hover:text-neutral-300 transition">VAULT SALE</button>
+          </nav>
+        </div>
+
+        <!-- Right Side: Search, Sell & Icons -->
+        <div class="flex items-center gap-3 md:gap-4">
+          
+          <!-- Desktop Search -->
+          <div class="relative hidden sm:block">
+            <button 
+              onclick="toggleSearchBar()" 
+              class="border border-white/70 hover:border-white px-3.5 py-1.5 flex items-center gap-2 text-xs font-semibold uppercase tracking-wider transition"
+            >
+              <i data-lucide="search" class="w-3.5 h-3.5"></i>
+              <span>SEARCH</span>
+            </button>
+            <input 
+              type="text" 
+              id="headerSearchInput" 
+              placeholder="SEARCH NOTES: OUD, VANILLA..." 
+              oninput="handleSearch(this.value)"
+              class="hidden absolute right-0 top-11 w-64 bg-black border border-white text-white p-2 text-xs font-mono uppercase focus:outline-none z-50"
+            />
+          </div>
+
+          <!-- Mobile Search Trigger -->
+          <button onclick="toggleMobileSearch()" class="sm:hidden text-white p-1" title="Search">
+            <i data-lucide="search" class="w-5 h-5"></i>
+          </button>
+
+          <!-- List Bottle Button -->
+          <button 
+            onclick="openSellerModal()" 
+            class="bg-white hover:bg-neutral-200 text-black px-2.5 py-1.5 md:px-3.5 md:py-1.5 text-[11px] md:text-xs font-semibold uppercase tracking-wider flex items-center gap-1.5 transition active:scale-95"
+          >
+            <i data-lucide="plus" class="w-3.5 h-3.5"></i>
+            <span class="hidden sm:inline">SELL BOTTLE</span>
+            <span class="sm:hidden">SELL</span>
+          </button>
+
+          <!-- Wishlist Heart -->
+          <button onclick="toggleWishlistModal()" class="text-white relative p-1" title="Wishlist">
+            <i data-lucide="heart" class="w-5 h-5"></i>
+            <span id="wishlistCountBadge" class="absolute -top-1.5 -right-2 bg-white text-black font-mono text-[9px] font-bold h-4 w-4 rounded-full flex items-center justify-center">0</span>
+          </button>
+
+          <!-- Shopping Cart -->
+          <button onclick="toggleCartDrawer(true)" class="text-white relative p-1" title="Cart">
+            <i data-lucide="shopping-bag" class="w-5 h-5"></i>
+            <span id="cartCountBadge" class="absolute -top-1.5 -right-2 bg-white text-black font-mono text-[9px] font-bold h-4 w-4 rounded-full flex items-center justify-center">0</span>
+          </button>
+
+          <!-- Account Icon -->
+          <button class="hidden lg:block text-white hover:opacity-75 p-1" title="Account">
+            <i data-lucide="user" class="w-5 h-5"></i>
+          </button>
+        </div>
+
+      </div>
+
+      <!-- Mobile Search Overlay Field -->
+      <div id="mobileSearchBar" class="hidden pb-3 pt-1 border-t border-white/20 lg:hidden">
+        <div class="relative w-full">
+          <input 
+            type="text" 
+            id="mobileSearchInput" 
+            placeholder="Search notes (oud, vanilla, amber)..." 
+            oninput="handleSearch(this.value)"
+            class="w-full bg-white border border-black text-black py-2 pl-8 pr-3 text-xs font-mono uppercase focus:outline-none"
+          />
+          <i data-lucide="search" class="w-4 h-4 absolute left-2.5 top-2.5 text-black"></i>
+        </div>
+      </div>
+
+    </div>
+  </header>
+
+  <!-- ================= MOBILE MENU DRAWER ================= -->
+  <div id="mobileNavDrawer" class="fixed inset-0 z-50 hidden lg:hidden">
+    <div class="absolute inset-0 drawer-backdrop" onclick="toggleMobileNav(false)"></div>
+    <div class="absolute left-0 top-0 bottom-0 w-4/5 max-w-sm bg-white border-r border-black p-6 flex flex-col justify-between z-50 overflow-y-auto font-mono">
+      <div>
+        <div class="flex items-center justify-between pb-4 border-b border-black">
+          <span class="font-bold text-xs uppercase tracking-widest">thrift.kick.store</span>
+          <button onclick="toggleMobileNav(false)" class="p-1 border border-black">
+            <i data-lucide="x" class="w-4 h-4"></i>
+          </button>
+        </div>
+
+        <nav class="flex flex-col gap-4 pt-6 text-xs uppercase tracking-wider">
+          <button onclick="goHome(); toggleMobileNav(false);" class="text-left font-semibold">🏠 BACK TO HOME</button>
+          <button onclick="quickFilterMenu('ALL'); toggleMobileNav(false);" class="text-left hover:underline">ALL PERFUMES</button>
+          <button onclick="quickFilterTier('BRAND_NEW'); toggleMobileNav(false);" class="text-left hover:underline">SEALED (10/10)</button>
+          <button onclick="quickFilterTier('PRE_LOVED'); toggleMobileNav(false);" class="text-left hover:underline">VINTAGE PARTIALS</button>
+          <button onclick="quickFilterNote('Oud'); toggleMobileNav(false);" class="text-left hover:underline">OUD & WOOD ACCORDS</button>
+          <button onclick="quickFilterNote('Vanilla'); toggleMobileNav(false);" class="text-left hover:underline">BOURBON VANILLA</button>
+          <button onclick="quickFilterMenu('SALE'); toggleMobileNav(false);" class="text-left hover:underline">VAULT DISCOUNTS</button>
+        </nav>
+      </div>
+
+      <div class="pt-6 border-t border-black space-y-3 text-xs">
+        <button onclick="openSellerModal(); toggleMobileNav(false);" class="w-full bg-black text-white py-2.5 uppercase font-medium">
+          + Consign A Flacon
+        </button>
+        <p class="text-[10px] text-center opacity-70">100% Escrow Protection</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= 3. COLORFUL CAMPAIGN BANNER SLIDER (RECTANGULAR) ================= -->
+  <section class="border-b border-black relative overflow-hidden py-3 sm:py-4 bg-white">
+    
+    <!-- Prev Slide Button -->
+    <button onclick="prevOfferSlide()" class="absolute left-2 sm:left-6 top-1/2 -translate-y-1/2 p-1.5 sm:p-2 border border-black bg-white hover:bg-black hover:text-white transition z-20 shadow-md" aria-label="Previous Offer">
+      <i data-lucide="chevron-left" class="w-4 h-4"></i>
+    </button>
+
+    <!-- Slide Content Box (Exact Rectangular Frame) -->
+    <div class="max-w-[1520px] mx-auto px-4 sm:px-12">
+      <div id="offerSlideWrapper" class="transition-opacity duration-300 w-full min-h-[140px] sm:min-h-[175px] md:min-h-[195px] border border-black overflow-hidden relative flex items-center justify-between">
+        <!-- Injected via JavaScript -->
+      </div>
+    </div>
+
+    <!-- Next Slide Button -->
+    <button onclick="nextOfferSlide()" class="absolute right-2 sm:right-6 top-1/2 -translate-y-1/2 p-1.5 sm:p-2 border border-black bg-white hover:bg-black hover:text-white transition z-20 shadow-md" aria-label="Next Offer">
+      <i data-lucide="chevron-right" class="w-4 h-4"></i>
+    </button>
+
+    <!-- Slide Dots -->
+    <div id="slideDotsContainer" class="flex items-center justify-center gap-1.5 mt-2.5"></div>
+  </section>
+
+  <!-- ================= 4. BREADCRUMBS ================= -->
+  <div class="max-w-[1520px] mx-auto px-4 sm:px-8 pt-5 pb-2">
+    <div class="flex items-center gap-2 text-xs font-normal text-black font-mono">
+      <button onclick="goHome()" class="hover:underline">Home</button>
+      <span>•</span>
+      <button onclick="quickFilterMenu('ALL')" class="hover:underline">Vault</button>
+      <span>•</span>
+      <button onclick="quickFilterMenu('ALL')" class="hover:underline">Niche Flacons</button>
+      <span>•</span>
+      <span class="font-semibold uppercase" id="currentBreadcrumb">CURATED ARCHIVE</span>
+    </div>
+  </div>
+
+  <!-- ================= 5. EXACT REVIEW & STYLE CIRCLES (MATCHING SCREENSHOT) ================= -->
+  <section class="py-5 border-b border-black bg-white">
+    <div class="max-w-[1520px] mx-auto px-4 sm:px-8">
+      
+      <!-- 4 Styled Circles with Instagram Story Outer Rings -->
+      <div class="flex items-center justify-center gap-6 sm:gap-14 overflow-x-auto no-scrollbar py-1">
+        
+        <!-- Circle 1: OUD & WOOD -->
+        <button onclick="filterByStyleCircle('Oud', 0)" class="flex flex-col items-center gap-2 group cursor-pointer shrink-0">
+          <div class="w-20 h-20 sm:w-24 sm:h-24 rounded-full p-[2.5px] story-ring-gradient flex items-center justify-center group-hover:scale-105 transition-transform shadow-md">
+            <div class="w-full h-full rounded-full overflow-hidden border-2 border-white bg-black flex items-center justify-center">
+              <img id="circleImg0" src="" alt="Oud flacon" class="w-full h-full object-cover" />
+            </div>
+          </div>
+          <span class="text-xs font-semibold uppercase tracking-wider font-mono">OUD & WOOD</span>
+        </button>
+
+        <!-- Circle 2: BALLET / VANILLA -->
+        <button onclick="filterByStyleCircle('Vanilla', 1)" class="flex flex-col items-center gap-2 group cursor-pointer shrink-0">
+          <div class="w-20 h-20 sm:w-24 sm:h-24 rounded-full p-[2.5px] story-ring-gradient flex items-center justify-center group-hover:scale-105 transition-transform shadow-md">
+            <div class="w-full h-full rounded-full overflow-hidden border-2 border-white bg-black flex items-center justify-center">
+              <img id="circleImg1" src="" alt="Vanilla flacon" class="w-full h-full object-cover" />
+            </div>
+          </div>
+          <span class="text-xs font-semibold uppercase tracking-wider font-mono">VANILLA</span>
+        </button>
+
+        <!-- Circle 3: RED / AMBER -->
+        <button onclick="filterByStyleCircle('Amber', 2)" class="flex flex-col items-center gap-2 group cursor-pointer shrink-0">
+          <div class="w-20 h-20 sm:w-24 sm:h-24 rounded-full p-[2.5px] story-ring-gradient flex items-center justify-center group-hover:scale-105 transition-transform shadow-md">
+            <div class="w-full h-full rounded-full overflow-hidden border-2 border-white bg-black flex items-center justify-center">
+              <img id="circleImg2" src="" alt="Amber flacon" class="w-full h-full object-cover" />
+            </div>
+          </div>
+          <span class="text-xs font-semibold uppercase tracking-wider font-mono">AMBER</span>
+        </button>
+
+        <!-- Circle 4: MOTORSPORT / CITRUS -->
+        <button onclick="filterByStyleCircle('Citrus', 3)" class="flex flex-col items-center gap-2 group cursor-pointer shrink-0">
+          <div class="w-20 h-20 sm:w-24 sm:h-24 rounded-full p-[2.5px] story-ring-gradient flex items-center justify-center group-hover:scale-105 transition-transform shadow-md">
+            <div class="w-full h-full rounded-full overflow-hidden border-2 border-white bg-black flex items-center justify-center">
+              <img id="circleImg3" src="" alt="Citrus flacon" class="w-full h-full object-cover" />
+            </div>
+          </div>
+          <span class="text-xs font-semibold uppercase tracking-wider font-mono">CITRUS</span>
+        </button>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ================= 6. TITLE HEADING ================= -->
+  <div class="max-w-[1520px] mx-auto px-4 sm:px-8 pt-7 pb-3">
+    <h1 id="catalogHeaderTitle" class="text-2xl sm:text-3xl font-black uppercase tracking-tight font-sans text-black">
+      CURATED NICHE VAULT
+    </h1>
+  </div>
+
+  <!-- ================= 7. UNIFIED FILTER TOOLBAR ================= -->
+  <section class="border-t border-b border-black/20 bg-white sticky top-16 md:top-[72px] z-30 py-3">
+    <div class="max-w-[1520px] mx-auto px-4 sm:px-8">
+      <div class="flex items-center justify-between gap-4">
+        
+        <!-- Filter Button -->
+        <div class="flex items-center gap-3">
+          <button 
+            onclick="openFilterDrawer()" 
+            class="border border-black px-4 py-1.5 text-xs font-semibold uppercase flex items-center gap-2 hover:bg-black hover:text-white transition group"
+          >
+            <i data-lucide="sliders-horizontal" class="w-3.5 h-3.5 group-hover:rotate-90 transition-transform"></i>
+            <span>FILTER BY NOTES & SPECS</span>
+            <span id="activeFilterBadge" class="hidden bg-black text-white group-hover:bg-white group-hover:text-black text-[10px] font-mono px-1.5 py-0.2">0</span>
+          </button>
+
+          <!-- Quick Clear Button -->
+          <button 
+            id="quickClearFiltersBtn" 
+            onclick="resetAllFilters()" 
+            class="hidden text-[11px] font-mono underline hover:opacity-75 uppercase"
+          >
+            Clear All
+          </button>
+        </div>
+
+        <!-- Sort Box -->
+        <div class="flex items-center gap-2">
+          <label class="hidden sm:inline text-xs font-mono uppercase opacity-70">Sort by:</label>
+          <select 
+            id="sortDropdown" 
+            onchange="handleSort(this.value)"
+            class="border border-black/40 px-3 py-1.5 text-xs font-medium uppercase tracking-wider bg-white cursor-pointer focus:outline-none"
+          >
+            <option value="recommended">RECOMMENDED</option>
+            <option value="price-low">PRICE: LOW TO HIGH</option>
+            <option value="price-high">PRICE: HIGH TO LOW</option>
+            <option value="newest">NEWEST FLACONS</option>
+          </select>
+        </div>
+
+      </div>
+
+      <!-- Filter Tags Bar -->
+      <div id="activeTagsContainer" class="hidden flex items-center gap-1.5 pt-2.5 flex-wrap font-mono text-[11px]"></div>
+    </div>
+  </section>
+
+  <!-- ================= 8. SLIDE-OVER FILTER DRAWER ================= -->
+  <div id="filterDrawer" class="fixed inset-0 z-50 hidden">
+    <div class="absolute inset-0 drawer-backdrop" onclick="closeFilterDrawer()"></div>
+    <div class="absolute left-0 top-0 bottom-0 w-full sm:w-[460px] bg-white border-r border-black flex flex-col z-50 shadow-2xl">
+      
+      <!-- Drawer Header -->
+      <div class="p-5 border-b border-black flex items-center justify-between bg-white">
+        <div>
+          <span class="text-[10px] font-mono uppercase tracking-widest opacity-60 block">thrift.kick.store</span>
+          <h2 class="text-sm font-semibold uppercase tracking-wider flex items-center gap-2">
+            <i data-lucide="sliders-horizontal" class="w-4 h-4"></i> Filter by Notes & Flacons
+          </h2>
+        </div>
+        <button onclick="closeFilterDrawer()" class="p-1 border border-black hover:bg-black hover:text-white transition">
+          <i data-lucide="x" class="w-4 h-4"></i>
+        </button>
+      </div>
+
+      <!-- Drawer Content -->
+      <div class="flex-grow overflow-y-auto p-6 space-y-6 text-xs font-mono bg-white">
+        
+        <!-- Max Price -->
+        <div class="space-y-2 border-b border-black pb-5">
+          <div class="flex justify-between items-center text-xs">
+            <span class="font-semibold uppercase tracking-wider">Maximum Price (INR)</span>
+            <span id="drawerPriceLabel" class="font-semibold text-sm">₹35,000</span>
+          </div>
+          <input 
+            type="range" 
+            min="4000" 
+            max="35000" 
+            step="1000" 
+            value="35000" 
+            id="drawerPriceRange" 
+            oninput="handleDrawerPriceChange(this.value)" 
+            class="w-full accent-black cursor-pointer"
+          />
+          <div class="flex justify-between text-[10px] opacity-60">
+            <span>₹4,000</span>
+            <span>₹35,000</span>
+          </div>
+        </div>
+
+        <!-- Notes / Accords -->
+        <div class="space-y-2.5 border-b border-black pb-5">
+          <span class="font-semibold uppercase tracking-wider block text-xs">Olfactory Notes / Accords</span>
+          <div class="grid grid-cols-2 gap-2 text-xs">
+            <label class="flex items-center gap-2 cursor-pointer border border-black p-2 hover:bg-black hover:text-white transition">
+              <input type="checkbox" name="drawerNotes" value="Oud" class="accent-black" />
+              <span>Oud / Agarwood</span>
+            </label>
+            <label class="flex items-center gap-2 cursor-pointer border border-black p-2 hover:bg-black hover:text-white transition">
+              <input type="checkbox" name="drawerNotes" value="Vanilla" class="accent-black" />
+              <span>Bourbon Vanilla</span>
+            </label>
+            <label class="flex items-center gap-2 cursor-pointer border border-black p-2 hover:bg-black hover:text-white transition">
+              <input type="checkbox" name="drawerNotes" value="Amber" class="accent-black" />
+              <span>Warm Amber</span>
+            </label>
+            <label class="flex items-center gap-2 cursor-pointer border border-black p-2 hover:bg-black hover:text-white transition">
+              <input type="checkbox" name="drawerNotes" value="Sandalwood" class="accent-black" />
+              <span>Sandalwood / Iris</span>
+            </label>
+            <label class="flex items-center gap-2 cursor-pointer border border-black p-2 hover:bg-black hover:text-white transition">
+              <input type="checkbox" name="drawerNotes" value="Tobacco" class="accent-black" />
+              <span>Tobacco Leaf</span>
+            </label>
+            <label class="flex items-center gap-2 cursor-pointer border border-black p-2 hover:bg-black hover:text-white transition">
+              <input type="checkbox" name="drawerNotes" value="Citrus" class="accent-black" />
+              <span>Bergamot & Citrus</span>
+            </label>
+          </div>
+        </div>
+
+        <!-- Bottle Condition / Tier -->
+        <div class="space-y-2.5 border-b border-black pb-5">
+          <span class="font-semibold uppercase tracking-wider block text-xs">Bottle Condition / Tier</span>
+          <div class="space-y-2 text-xs">
+            <label class="flex items-center gap-2.5 cursor-pointer">
+              <input type="radio" name="drawerCondition" value="ALL" checked class="accent-black" />
+              <span>All Bottles</span>
+            </label>
+            <label class="flex items-center gap-2.5 cursor-pointer">
+              <input type="radio" name="drawerCondition" value="BRAND_NEW" class="accent-black" />
+              <span>Factory Sealed (10/10 In Box)</span>
+            </label>
+            <label class="flex items-center gap-2.5 cursor-pointer">
+              <input type="radio" name="drawerCondition" value="PRE_LOVED" class="accent-black" />
+              <span>Vintage / Partial Flacon (Graded)</span>
+            </label>
+          </div>
+        </div>
+
+        <!-- Concentration -->
+        <div class="space-y-2.5">
+          <span class="font-semibold uppercase tracking-wider block text-xs">Concentration</span>
+          <div class="grid grid-cols-2 gap-2 text-center text-xs">
+            <button type="button" onclick="selectDrawerConcentration('Extrait de Parfum')" class="drawer-conc-btn border border-black py-2 hover:bg-black hover:text-white transition" data-conc="Extrait de Parfum">Extrait de Parfum</button>
+            <button type="button" onclick="selectDrawerConcentration('Eau de Parfum')" class="drawer-conc-btn border border-black py-2 hover:bg-black hover:text-white transition" data-conc="Eau de Parfum">Eau de Parfum (EDP)</button>
+            <button type="button" onclick="selectDrawerConcentration('Eau de Toilette')" class="drawer-conc-btn border border-black py-2 hover:bg-black hover:text-white transition" data-conc="Eau de Toilette">Eau de Toilette (EDT)</button>
+            <button type="button" onclick="selectDrawerConcentration('Elixir')" class="drawer-conc-btn border border-black py-2 hover:bg-black hover:text-white transition" data-conc="Elixir">Pure Elixir</button>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Footer Buttons -->
+      <div class="p-5 border-t border-black bg-white flex gap-3 font-mono text-xs">
+        <button 
+          onclick="resetAllFilters(); closeFilterDrawer();" 
+          class="w-1/3 border border-black py-3 uppercase hover:bg-black hover:text-white transition font-medium"
+        >
+          Reset
+        </button>
+        <button 
+          onclick="applyFiltersFromDrawer()" 
+          class="w-2/3 bg-black text-white border border-black hover:bg-white hover:text-black py-3 uppercase tracking-widest font-semibold transition"
+        >
+          Apply Filters
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ================= 9. MAIN PRODUCT GRID ================= -->
+  <main class="flex-grow max-w-[1520px] mx-auto px-4 sm:px-8 py-8 w-full bg-white">
+    <!-- Responsive 4 columns on desktop, 2 on mobile -->
+    <div id="productGrid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-6 gap-y-12"></div>
+  </main>
+
+  <!-- ================= 10. PRODUCT DETAIL & NOTE PYRAMID INSPECTOR ================= -->
+  <div id="perfumeDetailModal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-3 sm:p-4 drawer-backdrop">
+    <div class="bg-white border border-black w-full max-w-3xl relative max-h-[92vh] overflow-y-auto flex flex-col md:flex-row shadow-2xl">
+      <button onclick="closePerfumeDetailModal()" class="absolute top-3 right-3 text-black p-1.5 border border-black bg-white hover:bg-black hover:text-white z-20 transition">
+        <i data-lucide="x" class="w-4 h-4"></i>
+      </button>
+
+      <!-- Media Col -->
+      <div class="md:w-1/2 p-6 bg-white flex flex-col items-center justify-center border-b md:border-b-0 md:border-r border-black relative">
+        <span id="detailBadge" class="absolute top-4 left-4 bg-white border border-black text-black font-mono text-[9px] font-medium uppercase px-2 py-0.5"></span>
+        <img id="detailImage" src="" alt="Flacon preview" class="max-h-64 object-contain bottle-shadow my-4" />
+        <div class="w-full bg-white p-2 border border-black flex items-center justify-between text-[10px] font-mono">
+          <span class="flex items-center gap-1 font-medium">
+            <i data-lucide="shield" class="w-3.5 h-3.5"></i> Batch Code Verified
+          </span>
+          <span id="detailBatchCode" class="font-bold"></span>
+        </div>
+      </div>
+
+      <!-- Info Col -->
+      <div class="md:w-1/2 p-6 flex flex-col justify-between space-y-4 text-xs bg-white font-mono">
+        <div>
+          <div class="flex justify-between items-center text-[10px] uppercase mb-1 opacity-70">
+            <span id="detailHouse"></span>
+            <span id="detailVolume"></span>
+          </div>
+
+          <h2 id="detailTitle" class="text-base font-semibold uppercase tracking-tight leading-tight font-sans"></h2>
+
+          <div class="flex items-baseline gap-3 my-3">
+            <span id="detailPrice" class="text-xl font-semibold"></span>
+            <span id="detailMRP" class="line-through text-xs opacity-60"></span>
+            <span id="detailSavings" class="text-[10px] border border-black px-1.5 py-0.2"></span>
+          </div>
+
+          <!-- Olfactory Pyramid -->
+          <div class="border border-black p-3 space-y-2 bg-white">
+            <span class="text-[10px] uppercase font-bold block pb-1 border-b border-black/20">Olfactory Pyramid</span>
+            <div class="text-[11px] space-y-1">
+              <div><strong class="font-medium">Top Notes:</strong> <span id="detailTopNotes" class="opacity-80"></span></div>
+              <div><strong class="font-medium">Heart Notes:</strong> <span id="detailHeartNotes" class="opacity-80"></span></div>
+              <div><strong class="font-medium">Base Notes:</strong> <span id="detailBaseNotes" class="opacity-80"></span></div>
+            </div>
+          </div>
+
+          <!-- Seller Provenance & Fill Level -->
+          <div class="border border-black p-3 space-y-1 bg-white mt-2">
+            <div class="flex justify-between text-[10px] uppercase font-bold">
+              <span>Remaining Fill Level:</span>
+              <span id="detailFillLevel">100%</span>
+            </div>
+            <p id="detailDescription" class="text-xs leading-relaxed font-sans opacity-80 pt-1"></p>
+          </div>
+        </div>
+
+        <div class="space-y-2 pt-3 border-t border-black">
+          <button 
+            id="detailAddToCartBtn"
+            onclick="addDetailToBag()" 
+            class="w-full bg-black hover:bg-white hover:text-black border border-black text-white py-2.5 font-medium uppercase tracking-wider text-xs transition"
+          >
+            Add Flacon to Bag
+          </button>
+          
+          <button 
+            id="detailWishlistBtn"
+            onclick="toggleDetailWishlist()" 
+            class="w-full bg-white hover:bg-black hover:text-white border border-black text-black py-2 font-medium uppercase tracking-wider text-xs transition flex items-center justify-center gap-2"
+          >
+            <i data-lucide="heart" class="w-3.5 h-3.5"></i>
+            <span id="detailWishlistBtnText">Add to Wishlist</span>
+          </button>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= 11. BUYER STORY / REVIEWS MODAL ================= -->
+  <div id="storyModal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 modal-backdrop">
+    <div class="bg-white border border-black w-full max-w-sm relative flex flex-col shadow-2xl overflow-hidden font-mono text-xs">
+      
+      <!-- Top Progress Indicator -->
+      <div class="p-3 pb-1 border-b border-black">
+        <div class="h-1 bg-black/10 w-full overflow-hidden">
+          <div id="storyProgressBar" class="h-full bg-black w-0"></div>
+        </div>
+      </div>
+
+      <!-- User Header -->
+      <div class="px-4 py-2.5 flex items-center justify-between border-b border-black">
+        <div class="flex items-center gap-2">
+          <div class="w-8 h-8 rounded-full border border-black overflow-hidden p-0.5">
+            <img id="reviewUserAvatar" src="" class="w-full h-full object-cover rounded-full" />
+          </div>
+          <div>
+            <span id="reviewUsername" class="font-bold text-xs block"></span>
+            <span id="reviewLocation" class="text-[9px] opacity-60 uppercase block"></span>
+          </div>
+        </div>
+        <button onclick="closeStoryModal()" class="p-1 border border-black hover:bg-black hover:text-white transition">
+          <i data-lucide="x" class="w-3.5 h-3.5"></i>
+        </button>
+      </div>
+
+      <!-- Bottle in Story -->
+      <div class="p-6 bg-white flex flex-col items-center justify-center border-b border-black h-60 relative">
+        <img id="reviewShoeImage" src="" class="max-h-44 object-contain bottle-shadow" />
+        <span class="absolute bottom-2 left-3 text-[9px] border border-black px-1.5 py-0.2 bg-white font-mono">
+          ✓ VERIFIED UNBOXING & SPRAY TEST
+        </span>
+      </div>
+
+      <!-- Review Quote -->
+      <div class="p-4 space-y-2 bg-white">
+        <div class="flex items-center justify-between">
+          <span id="reviewShoeTitle" class="font-bold text-[11px] uppercase truncate max-w-[210px]"></span>
+          <span class="text-xs">★★★★★</span>
+        </div>
+        <p id="reviewQuote" class="text-xs font-sans leading-relaxed text-black/85"></p>
+        <div class="text-[9px] opacity-60 pt-1 border-t border-black/20 flex justify-between">
+          <span id="reviewDate"></span>
+          <span>Batch Authenticated</span>
+        </div>
+      </div>
+
+      <!-- Prev / Next Navigation -->
+      <div class="grid grid-cols-2 border-t border-black text-center text-xs font-medium">
+        <button onclick="prevReviewStory()" class="py-2.5 border-r border-black hover:bg-black hover:text-white transition">← PREV</button>
+        <button onclick="nextReviewStory()" class="py-2.5 hover:bg-black hover:text-white transition">NEXT STORY →</button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ================= 12. SELLER / CONSIGN BOTTLE MODAL ================= -->
+  <div id="sellerModal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 modal-backdrop overflow-y-auto">
+    <div class="bg-white border border-black w-full max-w-xl relative my-auto max-h-[92vh] flex flex-col shadow-2xl">
+      <div class="p-5 border-b border-black flex items-center justify-between bg-white">
+        <div>
+          <span class="text-[10px] font-mono uppercase tracking-widest text-black/60 block">thrift.kick.store</span>
+          <h2 class="text-sm font-semibold uppercase text-black tracking-wider">Consign / List Perfume Bottle</h2>
+        </div>
+        <button onclick="closeSellerModal()" class="border border-black p-1 hover:bg-black hover:text-white transition">
+          <i data-lucide="x" class="w-4 h-4"></i>
+        </button>
+      </div>
+
+      <form id="sellerForm" onsubmit="handleSellerSubmit(event)" class="p-6 overflow-y-auto space-y-4 text-xs font-mono bg-white">
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block uppercase text-[10px] mb-1">Fragrance House *</label>
+            <input type="text" id="sellerHouse" required placeholder="e.g. Tom Ford, Creed, MFK" class="w-full border border-black p-2 text-xs focus:outline-none" />
+          </div>
+          <div>
+            <label class="block uppercase text-[10px] mb-1">Perfume Name *</label>
+            <input type="text" id="sellerTitle" required placeholder="e.g. Tobacco Vanille" class="w-full border border-black p-2 text-xs focus:outline-none" />
+          </div>
+        </div>
+
+        <div class="grid grid-cols-3 gap-3">
+          <div>
+            <label class="block uppercase text-[10px] mb-1">Volume *</label>
+            <input type="text" id="sellerVolume" required value="100ML" class="w-full border border-black p-2 text-xs focus:outline-none" />
+          </div>
+          <div>
+            <label class="block uppercase text-[10px] mb-1">Concentration *</label>
+            <select id="sellerConcentration" class="w-full border border-black p-2 text-xs bg-white focus:outline-none">
+              <option value="Eau de Parfum">Eau de Parfum (EDP)</option>
+              <option value="Extrait de Parfum">Extrait de Parfum</option>
+              <option value="Eau de Toilette">Eau de Toilette</option>
+            </select>
+          </div>
+          <div>
+            <label class="block uppercase text-[10px] mb-1">Fill Level % *</label>
+            <input type="text" id="sellerFill" required value="100% Sealed" class="w-full border border-black p-2 text-xs focus:outline-none" />
+          </div>
+        </div>
+
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block uppercase text-[10px] mb-1">Selling Price (₹) *</label>
+            <input type="number" id="sellerPrice" required value="14999" class="w-full border border-black p-2 text-xs font-semibold focus:outline-none" />
+          </div>
+          <div>
+            <label class="block uppercase text-[10px] mb-1">Original Retail MRP (₹)</label>
+            <input type="number" id="sellerMRP" required value="22000" class="w-full border border-black p-2 text-xs focus:outline-none" />
+          </div>
+        </div>
+
+        <div class="border border-black p-3 text-[11px] space-y-1">
+          <div class="flex justify-between">
+            <span>Platform Commission (8%):</span>
+            <span id="feePreview">- ₹1,200</span>
+          </div>
+          <div class="flex justify-between font-semibold border-t border-black pt-1">
+            <span>Estimated Seller Net Payout:</span>
+            <span id="payoutPreview">₹13,799</span>
+          </div>
+        </div>
+
+        <button type="submit" class="w-full bg-black text-white border border-black hover:bg-white hover:text-black py-3 uppercase tracking-widest text-xs transition">
+          List Flacon on Vault
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- ================= 13. SHOPPING BAG DRAWER ================= -->
+  <div id="cartDrawer" class="fixed inset-0 z-50 hidden">
+    <div class="absolute inset-0 drawer-backdrop" onclick="toggleCartDrawer(false)"></div>
+    <div class="absolute right-0 top-0 bottom-0 w-full sm:w-96 bg-white border-l border-black flex flex-col z-50 shadow-2xl">
+      <div class="p-5 border-b border-black flex items-center justify-between">
+        <h2 class="text-xs font-semibold uppercase tracking-widest font-mono">Shopping Bag // <span id="cartDrawerCount">0</span> Flacons</h2>
+        <button onclick="toggleCartDrawer(false)" class="p-1 border border-black hover:bg-black hover:text-white">
+          <i data-lucide="x" class="w-4 h-4"></i>
+        </button>
+      </div>
+
+      <div id="cartItemsContainer" class="flex-grow overflow-y-auto p-5 space-y-4 font-mono text-xs"></div>
+
+      <div class="p-5 border-t border-black space-y-3 font-mono text-xs">
+        <div class="flex justify-between">
+          <span>Subtotal:</span>
+          <span id="cartSubtotal" class="font-semibold">₹0</span>
+        </div>
+        <div class="flex justify-between">
+          <span>Insured Transit & Legit Check:</span>
+          <span>FREE</span>
+        </div>
+        <div class="flex justify-between border-t border-black pt-2 font-semibold text-sm">
+          <span>Total:</span>
+          <span id="cartTotal">₹0</span>
+        </div>
+        <button onclick="alert('Order placed successfully via thrift.kick.store Escrow!')" class="w-full bg-black text-white hover:bg-white hover:text-black border border-black py-3 uppercase tracking-widest font-mono transition">
+          Secure Checkout
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= 14. WISHLIST MODAL ================= -->
+  <div id="wishlistModal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 drawer-backdrop">
+    <div class="bg-white border border-black w-full max-w-md p-6 font-mono text-xs">
+      <div class="flex items-center justify-between border-b border-black pb-3 mb-4">
+        <h3 class="font-semibold uppercase tracking-wider">Saved Flacons (<span id="wishlistModalCount">0</span>)</h3>
+        <button onclick="toggleWishlistModal()"><i data-lucide="x" class="w-4 h-4"></i></button>
+      </div>
+      <div id="wishlistContainer" class="space-y-3 max-h-72 overflow-y-auto"></div>
+    </div>
+  </div>
+
+  <!-- ================= FOOTER ================= -->
+  <footer class="bg-white border-t border-black text-black text-xs py-12 mt-16 font-sans">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-8 pb-10 border-b border-black">
+        
+        <div class="space-y-3">
+          <div class="flex items-center gap-2">
+            <span class="text-base font-semibold lowercase tracking-wider text-black">thrift<span class="font-normal opacity-80">.kick</span><span class="font-mono text-xs">.store</span></span>
+          </div>
+          <p class="text-[11px] leading-relaxed font-normal opacity-70">
+            Independent niche fragrance boutique, partial bottle consignment, and curated vintage decant archive for India.
+          </p>
+        </div>
+
+        <div>
+          <h4 class="font-medium uppercase tracking-wider text-xs mb-3 font-mono">Consignment Desk</h4>
+          <ul class="space-y-2 text-[11px] opacity-80 font-mono">
+            <li><button onclick="openSellerModal()" class="hover:underline transition">Consign a Flacon</button></li>
+            <li><a href="#" class="hover:underline transition">8.0% Reseller Fee</a></li>
+            <li><a href="#" class="hover:underline transition">Batch Code Database</a></li>
+            <li><a href="#" class="hover:underline transition">Payout Protection</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h4 class="font-medium uppercase tracking-wider text-xs mb-3 font-mono">Authentication</h4>
+          <ul class="space-y-2 text-[11px] opacity-80 font-mono">
+            <li><a href="#" class="hover:underline transition">Optical Nozzle & Atomizer Check</a></li>
+            <li><a href="#" class="hover:underline transition">Fill-Level Verification</a></li>
+            <li><a href="#" class="hover:underline transition">Vintage Formulation Guide</a></li>
+            <li><a href="#" class="hover:underline transition">Anti-Counterfeit Escrow</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h4 class="font-medium uppercase tracking-wider text-xs mb-3 font-mono">Accepted Payments</h4>
+          <p class="text-[11px] mb-3 opacity-70">All payments held in escrow until doorstep spray check.</p>
+          <div class="flex items-center gap-1.5 text-[10px] font-mono">
+            <span class="border border-black px-2 py-0.5">UPI</span>
+            <span class="border border-black px-2 py-0.5">CARDS</span>
+            <span class="border border-black px-2 py-0.5">NETBANKING</span>
+            <span class="border border-black px-2 py-0.5">COD</span>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="pt-6 flex flex-col sm:flex-row items-center justify-between text-[10px] font-mono opacity-70">
+        <p>© 2026 thrift.kick.store // Independent Perfumery Infrastructure.</p>
+        <div class="flex gap-4 mt-2 sm:mt-0 uppercase">
+          <a href="#" class="hover:underline">Privacy Policy</a>
+          <a href="#" class="hover:underline">Consignment Terms</a>
+          <a href="#" class="hover:underline">Olfactory Audit</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ================= JAVASCRIPT ENGINE & GUARANTEED FLACON RENDERER ================= -->
+  <script>
+    /* 
+      Bulletproof URI-Encoded SVG Flacon Generator.
+      Guarantees 100% immediate rendering even if completely offline or behind strict firewalls.
+    */
+    function getSvgBottle(label, house, color) {
+      const cleanColor = color || '#1a1a1a';
+      const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 380" width="100%" height="100%">
+        <defs>
+          <linearGradient id="g_${label.replace(/\s+/g, '_')}" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="${cleanColor}" stop-opacity="0.9" />
+            <stop offset="100%" stop-color="#000000" stop-opacity="0.95" />
+          </linearGradient>
+        </defs>
+        <ellipse cx="160" cy="355" rx="70" ry="12" fill="#000000" opacity="0.15" />
+        <rect x="135" y="32" width="50" height="48" rx="2" fill="#000000" stroke="#000000" stroke-width="2" />
+        <rect x="144" y="80" width="32" height="12" fill="#000000" />
+        <rect x="85" y="92" width="150" height="235" rx="6" fill="url(#g_${label.replace(/\s+/g, '_')})" stroke="#000000" stroke-width="2.5" />
+        <line x1="96" y1="102" x2="96" y2="315" stroke="#ffffff" stroke-width="3" stroke-linecap="round" opacity="0.45" />
+        <rect x="105" y="155" width="110" height="110" fill="#ffffff" stroke="#000000" stroke-width="1.5" />
+        <rect x="110" y="160" width="100" height="100" fill="none" stroke="#000000" stroke-width="0.75" />
+        <text x="160" y="185" font-family="'Inter', sans-serif" font-size="8.5" font-weight="700" text-anchor="middle" fill="#000000" letter-spacing="1">${house || 'SCENT VAULT'}</text>
+        <line x1="125" y1="195" x2="195" y2="195" stroke="#000000" stroke-width="0.75" />
+        <text x="160" y="215" font-family="'Inter', sans-serif" font-size="11" font-weight="800" text-anchor="middle" fill="#000000">${label || 'PARFUM'}</text>
+        <text x="160" y="235" font-family="'JetBrains Mono', monospace" font-size="8" text-anchor="middle" fill="#000000" opacity="0.7">EAU DE PARFUM</text>
+        <text x="160" y="250" font-family="'JetBrains Mono', monospace" font-size="7.5" text-anchor="middle" fill="#000000" opacity="0.6">100ML // VAULT</text>
+      </svg>`;
+      return 'data:image/svg+xml;utf8,' + encodeURIComponent(svg);
+    }
+
+    // 1. Rectangular Colored Event & Discount Slides
+    const offerSlides = [
+      {
+        id: 'big-sale-blue',
+        bgGradient: 'bg-gradient-to-r from-[#001738] via-[#003882] to-[#00122e]',
+        tag: 'SPECIAL OFFER',
+        title: 'BIG SALE',
+        badgeText: 'UP TO 50% OFF',
+        sub: 'PRE-LOVED & DEADSTOCK HEAT // LIMITED SIZES',
+        btnText: 'SHOP NOW',
+        filterAction: 'SALE',
+        image: 'https://images.unsplash.com/photo-1541643600914-78b084683601?auto=format&fit=crop&w=600&q=80',
+        fallbackSvg: getSvgBottle('BIG SALE', 'VAULT', '#003882')
+      },
+      {
+        id: 'sage-kicks',
+        bgGradient: 'bg-gradient-to-r from-[#293325] via-[#43523c] to-[#1c2419]',
+        tag: 'THRIFT EDITION',
+        title: 'ARCHIVE KICKS & SCENTS',
+        badgeText: 'COMFORT & VINTAGE',
+        sub: 'Being stylish does not need to sacrifice comfort.',
+        btnText: 'EXPLORE THRIFT',
+        filterAction: 'PRE_LOVED',
+        image: 'https://images.unsplash.com/photo-1594035910387-fea47794261f?auto=format&fit=crop&w=600&q=80',
+        fallbackSvg: getSvgBottle('ARCHIVE', 'THRIFT', '#43523c')
+      },
+      {
+        id: 'ice-shine',
+        bgGradient: 'bg-gradient-to-r from-[#082238] via-[#104b7d] to-[#041624]',
+        tag: 'VERIFIED DROPS',
+        title: 'SHINE EVERY STEP',
+        badgeText: '100% AUTHENTIC',
+        sub: 'Because every step requires confidence. Legit-checked by hand.',
+        btnText: 'VIEW DEADSTOCK',
+        filterAction: 'BRAND_NEW',
+        image: 'https://images.unsplash.com/photo-1616949755610-8c9bbc08f138?auto=format&fit=crop&w=600&q=80',
+        fallbackSvg: getSvgBottle('AVENTUS', 'CREED', '#104b7d')
+      },
+      {
+        id: 'cobalt-arrival',
+        bgGradient: 'bg-gradient-to-r from-[#062c61] via-[#094c9f] to-[#031d42]',
+        tag: 'JUST LANDED',
+        title: 'NEW ARRIVAL',
+        badgeText: '20% OFF ESCROW',
+        sub: 'Freshly consigned pairs from verified independent boutiques.',
+        btnText: 'DISCOVER PAIRS',
+        filterAction: 'NEW',
+        image: 'https://images.unsplash.com/photo-1592945403244-b3fbafd7f539?auto=format&fit=crop&w=600&q=80',
+        fallbackSvg: getSvgBottle('NEW IN', 'PARFUM', '#094c9f')
+      }
+    ];
+
+    let currentOfferIndex = 0;
+    let offerInterval = null;
+
+    // 2. Buyer Review Stories
+    const reviewStories = [
+      {
+        id: 'review-oud',
+        user: '@arjun.parfum',
+        location: 'Mumbai, MH',
+        avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=150&q=80',
+        shoeTitle: "Tom Ford Oud Wood (EDP)",
+        shoeImage: 'https://images.unsplash.com/photo-1594035910387-fea47794261f?auto=format&fit=crop&w=600&q=80',
+        fallbackSvg: getSvgBottle('OUD WOOD', 'TOM FORD', '#2c3e50'),
+        quote: "Batch code verified from 2020. 95% full flacon as advertised, nozzle atomizes perfectly. Escrow protection was seamless!",
+        date: "Yesterday"
+      },
+      {
+        id: 'review-vanilla',
+        user: '@tanya.scents',
+        location: 'Delhi, NCR',
+        avatar: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=150&q=80',
+        shoeTitle: "Kilian Angels' Share (50ml)",
+        shoeImage: 'https://images.unsplash.com/photo-1547887537-6158d64c35b3?auto=format&fit=crop&w=600&q=80',
+        fallbackSvg: getSvgBottle('ANGELS', 'KILIAN', '#b7950b'),
+        quote: "Saved ₹4,500 off retail price on this sealed presentation. Legit-checked at transit hub and arrived in 48 hours.",
+        date: "3 days ago"
+      },
+      {
+        id: 'review-amber',
+        user: '@vikram.fragrance',
+        location: 'Bangalore, KA',
+        avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=150&q=80',
+        shoeTitle: "Baccarat Rouge 540 Extrait",
+        shoeImage: 'https://images.unsplash.com/photo-1523293182086-7651a899d37f?auto=format&fit=crop&w=600&q=80',
+        fallbackSvg: getSvgBottle('BR 540', 'KURKDJIAN', '#922b21'),
+        quote: "Extrait projection is monstrous! 14 hours easily. 100% genuine juice, red bottle with zero cosmetic flaws.",
+        date: "5 days ago"
+      },
+      {
+        id: 'review-citrus',
+        user: '@priya_olfactory',
+        location: 'Goa, GA',
+        avatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=150&q=80',
+        shoeTitle: "Byredo Gypsy Water (100ml)",
+        shoeImage: 'https://images.unsplash.com/photo-1616949755610-8c9bbc08f138?auto=format&fit=crop&w=600&q=80',
+        fallbackSvg: getSvgBottle('G. WATER', 'BYREDO', '#2874a6'),
+        quote: "Magnetic cap snaps crisply, batch code aligns on glass base and box. The best consignment platform in India.",
+        date: "1 week ago"
+      }
+    ];
+
+    let currentReviewIndex = 0;
+    let reviewStoryTimer = null;
+
+    // 3. Perfume Catalog with Guaranteed Double-Fallback Loading
+    let perfumes = [
+      {
+        id: 'mfk-br540-extrait',
+        house: 'Maison Francis Kurkdjian',
+        title: "Baccarat Rouge 540 Extrait de Parfum",
+        volume: '70ML',
+        concentration: 'Extrait de Parfum',
+        category: 'BRAND_NEW',
+        grade: '10/10 FACTORY SEALED',
+        price: 29999,
+        mrp: 36000,
+        fillLevel: '100% Sealed',
+        batchCode: '22144A',
+        notes: ['Amber', 'Saffron', 'Cedarwood'],
+        topNotes: 'Bitter Almond, Saffron',
+        heartNotes: 'Egyptian Jasmine, Cedar',
+        baseNotes: 'Ambergris, Woody Musks',
+        description: 'Brand new factory sealed in iconic red crystal presentation. Sourced directly from verified collector.',
+        image: 'https://images.unsplash.com/photo-1523293182086-7651a899d37f?auto=format&fit=crop&w=600&q=80',
+        fallbackSvg: getSvgBottle('BR 540', 'KURKDJIAN', '#78281f')
+      },
+      {
+        id: 'tf-tobacco-vanille',
+        house: 'Tom Ford',
+        title: "Tobacco Vanille Private Blend",
+        volume: '100ML',
+        concentration: 'Eau de Parfum',
+        category: 'PRE_LOVED',
+        grade: '90/100ML PARTIAL VINTAGE',
+        price: 18999,
+        mrp: 27500,
+        fillLevel: '90% Full',
+        batchCode: 'A39 Batch 2019',
+        notes: ['Vanilla', 'Tobacco', 'Spices'],
+        topNotes: 'Tobacco Leaf, Spicy Notes',
+        heartNotes: 'Tonka Bean, Tobacco Blossom, Vanilla, Cacao',
+        baseNotes: 'Dry Fruit Accord, Rich Woods',
+        description: 'Pre-reformulation 2019 batch. Stored in climate-controlled dark vault. Flawless scent projection.',
+        image: 'https://images.unsplash.com/photo-1547887537-6158d64c35b3?auto=format&fit=crop&w=600&q=80',
+        fallbackSvg: getSvgBottle('TOBACCO V.', 'TOM FORD', '#212f3d')
+      },
+      {
+        id: 'tf-oud-wood',
+        house: 'Tom Ford',
+        title: "Oud Wood Private Blend Flacon",
+        volume: '50ML',
+        concentration: 'Eau de Parfum',
+        category: 'BRAND_NEW',
+        grade: '10/10 SEALED',
+        price: 16499,
+        mrp: 22000,
+        fillLevel: '100% Sealed',
+        batchCode: 'B82',
+        notes: ['Oud', 'Sandalwood', 'Cardamom'],
+        topNotes: 'Rosewood, Cardamom, Chinese Pepper',
+        heartNotes: 'Oud Wood, Sandalwood, Vetiver',
+        baseNotes: 'Tonka Bean, Vanilla, Amber',
+        description: 'One of the most revered smoky oud fragrances in modern history. Factory sealed with original cellophane.',
+        image: 'https://images.unsplash.com/photo-1594035910387-fea47794261f?auto=format&fit=crop&w=600&q=80',
+        fallbackSvg: getSvgBottle('OUD WOOD', 'TOM FORD', '#17202a')
+      },
+      {
+        id: 'le-labo-santal33',
+        house: 'Le Labo',
+        title: "Santal 33 Eau de Parfum",
+        volume: '100ML',
+        concentration: 'Eau de Parfum',
+        category: 'BRAND_NEW',
+        grade: '10/10 SEALED',
+        price: 19999,
+        mrp: 26000,
+        fillLevel: '100% Sealed',
+        batchCode: 'LL-2391',
+        notes: ['Sandalwood', 'Cedarwood', 'Cardamom', 'Iris'],
+        topNotes: 'Violet Accord, Cardamom',
+        heartNotes: 'Iris, Papyrus, Ambrox',
+        baseNotes: 'Cedarwood, Leather, Sandalwood',
+        description: 'Compelling smoky wood signature. Box printed with fresh laboratory compounding credentials.',
+        image: 'https://images.unsplash.com/photo-1592945403244-b3fbafd7f539?auto=format&fit=crop&w=600&q=80',
+        fallbackSvg: getSvgBottle('SANTAL 33', 'LE LABO', '#707b7c')
+      },
+      {
+        id: 'kilian-angels-share',
+        house: 'Kilian Paris',
+        title: "Angels' Share Liquors Collection",
+        volume: '50ML',
+        concentration: 'Eau de Parfum',
+        category: 'PRE_LOVED',
+        grade: '45/50ML PARTIAL',
+        price: 14499,
+        mrp: 21500,
+        fillLevel: '90% Full',
+        batchCode: 'KL-0912',
+        notes: ['Vanilla', 'Cognac', 'Cinnamon', 'Tonka'],
+        topNotes: 'Cognac Oil',
+        heartNotes: 'Cinnamon, Oak Absolute, Tonka Bean',
+        baseNotes: 'Sandalwood, Praline, Vanilla',
+        description: 'Heavy art-deco crystal glassware. Sprayed ~15 times. Genuine juice with caramel booze warmth.',
+        image: 'https://images.unsplash.com/photo-1588405748880-12d1d2a59f75?auto=format&fit=crop&w=600&q=80',
+        fallbackSvg: getSvgBottle('ANGELS', 'KILIAN', '#b7950b')
+      },
+      {
+        id: 'byredo-gypsy-water',
+        house: 'Byredo',
+        title: "Gypsy Water Eau de Parfum",
+        volume: '100ML',
+        concentration: 'Eau de Parfum',
+        category: 'BRAND_NEW',
+        grade: '10/10 SEALED',
+        price: 16999,
+        mrp: 23500,
+        fillLevel: '100% Sealed',
+        batchCode: 'BY-8831',
+        notes: ['Citrus', 'Vanilla', 'Bergamot', 'Amber'],
+        topNotes: 'Bergamot, Lemon, Pepper, Juniper Berries',
+        heartNotes: 'Incense, Pine Needles, Orris',
+        baseNotes: 'Amber, Vanilla, Sandalwood',
+        description: 'Bohemian beauty of fresh soil, deep forests and campfires. Sealed in Swedish minimalist packaging.',
+        image: 'https://images.unsplash.com/photo-1616949755610-8c9bbc08f138?auto=format&fit=crop&w=600&q=80',
+        fallbackSvg: getSvgBottle('G. WATER', 'BYREDO', '#2e4053')
+      },
+      {
+        id: 'creed-aventus-vintage',
+        house: 'Creed',
+        title: "Aventus (Vintage 2018 Smoke Batch)",
+        volume: '100ML',
+        concentration: 'Eau de Parfum',
+        category: 'PRE_LOVED',
+        grade: '80/100ML RARE ARCHIVE',
+        price: 24999,
+        mrp: 38000,
+        fillLevel: '80% Full',
+        batchCode: '18K11 Vintage',
+        notes: ['Citrus', 'Birch Smoke', 'Bergamot'],
+        topNotes: 'Pineapple, Bergamot, Blackcurrant Leaves',
+        heartNotes: 'Birch Smoke, Pink Berries, Patchouli',
+        baseNotes: 'Oakmoss, Ambergris, Musk',
+        description: 'Holy grail 2018 formulation with rich smoky birch notes before IFRA reformulation. Bottle 80% full.',
+        image: 'https://images.unsplash.com/photo-1541643600914-78b084683601?auto=format&fit=crop&w=600&q=80',
+        fallbackSvg: getSvgBottle('AVENTUS', 'CREED', '#1b2631')
+      },
+      {
+        id: 'pdm-layton-exclusif',
+        house: 'Parfums de Marly',
+        title: "Layton Exclusif Royal Essence",
+        volume: '125ML',
+        concentration: 'Extrait de Parfum',
+        category: 'BRAND_NEW',
+        grade: '10/10 SEALED',
+        price: 19499,
+        mrp: 28000,
+        fillLevel: '100% Sealed',
+        batchCode: 'PDM-9921',
+        notes: ['Oud', 'Vanilla', 'Amber', 'Almond'],
+        topNotes: 'Bergamot, Grapefruit, Apple',
+        heartNotes: 'Geranium, Cinnamon, Lavender, Agarwood',
+        baseNotes: 'Cypriol, Guaiac Wood, Vanilla, Amber',
+        description: 'Dense, animalic, and opulent take on Layton with natural Laotian oud. Factory sealed 125ml metal flacon.',
+        image: 'https://images.unsplash.com/photo-1582211594533-268f4f1edcb9?auto=format&fit=crop&w=600&q=80',
+        fallbackSvg: getSvgBottle('LAYTON', 'P. DE MARLY', '#212f3d')
+      }
+    ];
+
+    let appliedFilters = {
+      maxPrice: 35000,
+      condition: 'ALL',
+      notes: [],
+      concentration: null,
+      search: ''
+    };
+
+    let cart = [];
+    let wishlist = [];
+    let activeQuickViewPerfume = null;
+
+    document.addEventListener('DOMContentLoaded', () => {
+      // Set the 4 Story Circle preview images with fallbacks
+      setupCircleImage('circleImg0', reviewStories[0].shoeImage, reviewStories[0].fallbackSvg);
+      setupCircleImage('circleImg1', reviewStories[1].shoeImage, reviewStories[1].fallbackSvg);
+      setupCircleImage('circleImg2', reviewStories[2].shoeImage, reviewStories[2].fallbackSvg);
+      setupCircleImage('circleImg3', reviewStories[3].shoeImage, reviewStories[3].fallbackSvg);
+
+      initOfferBanner();
+      renderProducts();
+      lucide.createIcons();
+    });
+
+    function setupCircleImage(id, primary, fallback) {
+      const el = document.getElementById(id);
+      if (!el) return;
+      el.src = primary;
+      el.onerror = () => { el.src = fallback; };
+    }
+
+    /* ================= LOGO HOME RESET ================= */
+    function goHome() {
+      resetAllFilters();
+      closeFilterDrawer();
+      toggleCartDrawer(false);
+      toggleMobileNav(false);
+      document.getElementById('currentBreadcrumb').textContent = 'CURATED ARCHIVE';
+      document.getElementById('catalogHeaderTitle').textContent = 'CURATED NICHE VAULT';
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    /* ================= BANNER SLIDER WITH POSTER IMAGE + TEXT ================= */
+    function initOfferBanner() {
+      renderOfferSlide();
+      renderSlideDots();
+      offerInterval = setInterval(nextOfferSlide, 4500);
+    }
+
+    function renderOfferSlide() {
+      const container = document.getElementById('offerSlideWrapper');
+      const slide = offerSlides[currentOfferIndex];
+      container.style.opacity = '0';
+
+      setTimeout(() => {
+        container.className = `transition-opacity duration-300 w-full min-h-[140px] sm:min-h-[175px] md:min-h-[195px] border border-black overflow-hidden relative flex items-center justify-between px-6 sm:px-12 ${slide.bgGradient} text-white`;
+
+        container.innerHTML = `
+          <!-- Left: Campaign Text & Badges -->
+          <div class="flex flex-col text-left justify-center space-y-1 sm:space-y-2 max-w-xl z-10 py-4">
+            <div class="flex items-center gap-2">
+              <span class="text-[9px] sm:text-[10px] font-mono tracking-widest uppercase border border-white px-2 py-0.5 inline-block bg-black/40">
+                ${slide.tag}
+              </span>
+              <span class="text-[9px] sm:text-[10px] font-mono tracking-wider uppercase bg-white text-black font-bold px-2 py-0.5">
+                ${slide.badgeText}
+              </span>
+            </div>
+
+            <h2 class="text-xl sm:text-3xl md:text-4xl font-black uppercase tracking-tight leading-none drop-shadow-md">
+              ${slide.title}
+            </h2>
+
+            <p class="text-[10px] sm:text-xs font-mono uppercase opacity-90 tracking-tight leading-tight">
+              ${slide.sub}
+            </p>
+
+            <div class="pt-1">
+              <button 
+                onclick="handleBannerAction('${slide.filterAction}')" 
+                class="bg-white text-black hover:bg-black hover:text-white border border-white px-4 py-1.5 text-xs font-bold font-mono uppercase tracking-wider transition shadow-sm"
+              >
+                ${slide.btnText} →
+              </button>
+            </div>
+          </div>
+
+          <!-- Right: Floating Fragrance Flacon Image -->
+          <div class="flex items-center justify-center shrink-0 w-32 sm:w-48 md:w-56 h-28 sm:h-36 md:h-44 z-10">
+            <img 
+              src="${slide.image}" 
+              alt="${slide.title}" 
+              onerror="this.onerror=null; this.src='${slide.fallbackSvg}';"
+              class="max-h-full max-w-full object-contain filter drop-shadow-[0_14px_16px_rgba(0,0,0,0.65)] transform -rotate-6 hover:rotate-0 transition-transform duration-500 rounded"
+            />
+          </div>
+        `;
+
+        container.style.opacity = '1';
+        updateSlideDots();
+      }, 150);
+    }
+
+    function renderSlideDots() {
+      const dotsContainer = document.getElementById('slideDotsContainer');
+      dotsContainer.innerHTML = offerSlides.map((_, i) => `
+        <button onclick="setOfferSlide(${i})" class="w-2.5 h-1 ${i === currentOfferIndex ? 'bg-black' : 'bg-black/20'} transition-all"></button>
+      `).join('');
+    }
+
+    function updateSlideDots() {
+      const dots = document.querySelectorAll('#slideDotsContainer button');
+      dots.forEach((dot, idx) => {
+        if (idx === currentOfferIndex) dot.className = "w-6 h-1 bg-black transition-all";
+        else dot.className = "w-2.5 h-1 bg-black/20 transition-all";
+      });
+    }
+
+    function setOfferSlide(i) {
+      currentOfferIndex = i;
+      renderOfferSlide();
+    }
+
+    function nextOfferSlide() {
+      currentOfferIndex = (currentOfferIndex + 1) % offerSlides.length;
+      renderOfferSlide();
+    }
+
+    function prevOfferSlide() {
+      currentOfferIndex = (currentOfferIndex - 1 + offerSlides.length) % offerSlides.length;
+      renderOfferSlide();
+    }
+
+    function handleBannerAction(action) {
+      if (action === 'SALE' || action === 'PRE_LOVED') quickFilterTier('PRE_LOVED');
+      else if (action === 'BRAND_NEW') quickFilterTier('BRAND_NEW');
+      else quickFilterMenu('ALL');
+    }
+
+    /* ================= REVIEW STORIES ================= */
+    function filterByStyleCircle(note, reviewIndex) {
+      appliedFilters.notes = [note];
+      renderProducts();
+      updateFilterSummaryUI();
+      openReviewStory(reviewIndex);
+    }
+
+    function openReviewStory(index) {
+      currentReviewIndex = index;
+      renderReviewStory();
+      document.getElementById('storyModal').classList.remove('hidden');
+      document.body.style.overflow = 'hidden';
+      startReviewStoryTimer();
+      lucide.createIcons();
+    }
+
+    function closeStoryModal() {
+      document.getElementById('storyModal').classList.add('hidden');
+      document.body.style.overflow = '';
+      clearTimeout(reviewStoryTimer);
+    }
+
+    function renderReviewStory() {
+      const review = reviewStories[currentReviewIndex];
+      document.getElementById('reviewUserAvatar').src = review.avatar;
+      document.getElementById('reviewUsername').textContent = review.user;
+      document.getElementById('reviewLocation').textContent = review.location;
+      
+      const img = document.getElementById('reviewShoeImage');
+      img.src = review.shoeImage;
+      img.onerror = () => { img.src = review.fallbackSvg; };
+
+      document.getElementById('reviewShoeTitle').textContent = review.shoeTitle;
+      document.getElementById('reviewQuote').textContent = `"${review.quote}"`;
+      document.getElementById('reviewDate').textContent = review.date;
+
+      const bar = document.getElementById('storyProgressBar');
+      bar.style.width = '0%';
+      setTimeout(() => { bar.style.width = '100%'; bar.style.transition = 'width 5s linear'; }, 50);
+    }
+
+    function startReviewStoryTimer() {
+      clearTimeout(reviewStoryTimer);
+      reviewStoryTimer = setTimeout(() => {
+        nextReviewStory();
+      }, 5000);
+    }
+
+    function nextReviewStory() {
+      if (currentReviewIndex < reviewStories.length - 1) {
+        currentReviewIndex++;
+        renderReviewStory();
+        startReviewStoryTimer();
+      } else {
+        closeStoryModal();
+      }
+    }
+
+    function prevReviewStory() {
+      if (currentReviewIndex > 0) {
+        currentReviewIndex--;
+        renderReviewStory();
+        startReviewStoryTimer();
+      }
+    }
+
+    /* ================= PRODUCT GRID RENDERING ================= */
+    function formatINR(val) {
+      return '₹' + val.toLocaleString('en-IN');
+    }
+
+    function renderProducts() {
+      const container = document.getElementById('productGrid');
+      
+      let filtered = perfumes.filter(p => {
+        const matchesPrice = p.price <= appliedFilters.maxPrice;
+        const matchesCondition = (appliedFilters.condition === 'ALL') || (p.category === appliedFilters.condition);
+        const matchesSearch = !appliedFilters.search || 
+          p.title.toLowerCase().includes(appliedFilters.search.toLowerCase()) || 
+          p.house.toLowerCase().includes(appliedFilters.search.toLowerCase()) ||
+          p.notes.some(n => n.toLowerCase().includes(appliedFilters.search.toLowerCase()));
+        
+        const matchesConcentration = !appliedFilters.concentration || p.concentration.toLowerCase().includes(appliedFilters.concentration.toLowerCase());
+        const matchesNotes = !appliedFilters.notes.length || appliedFilters.notes.some(n => p.notes.includes(n));
+
+        return matchesPrice && matchesCondition && matchesSearch && matchesConcentration && matchesNotes;
+      });
+
+      if (!filtered.length) {
+        container.innerHTML = `
+          <div class="col-span-full py-16 text-center font-mono text-xs">
+            <p class="uppercase font-semibold">[ NO MATCHING PERFUMES FOUND ]</p>
+            <button onclick="resetAllFilters()" class="mt-3 border border-black px-4 py-1.5 uppercase hover:bg-black hover:text-white transition">Reset Filters</button>
+          </div>
+        `;
+        return;
+      }
+
+      container.innerHTML = filtered.map(perfume => {
+        const isWish = wishlist.includes(perfume.id);
+        return `
+          <div class="product-card flex flex-col group cursor-pointer" onclick="openPerfumeDetail('${perfume.id}')">
+            
+            <!-- Picture Box Container: Pure White with Flacon -->
+            <div class="relative w-full aspect-square bg-white flex items-center justify-center overflow-hidden border border-transparent group-hover:border-black transition">
+              <img 
+                src="${perfume.image}" 
+                alt="${perfume.title}" 
+                onerror="this.onerror=null; this.src='${perfume.fallbackSvg}';"
+                class="bottle-shadow max-h-48 w-auto object-contain p-2"
+                loading="eager"
+              />
+
+              <!-- Wishlist Heart -->
+              <button 
+                onclick="event.stopPropagation(); toggleWishlist('${perfume.id}')"
+                class="absolute top-2 right-2 p-1.5 text-black hover:scale-110 transition z-10"
+              >
+                <i data-lucide="heart" class="w-4 h-4 ${isWish ? 'fill-black' : ''}"></i>
+              </button>
+
+              <!-- Condition Badge -->
+              <div class="absolute top-2 left-2 z-10">
+                <span class="text-[9px] font-mono border border-black bg-white px-1.5 py-0.2 uppercase">
+                  ${perfume.grade}
+                </span>
+              </div>
+            </div>
+
+            <!-- Meta Details -->
+            <div class="mt-2.5 space-y-1 font-mono">
+              <div class="flex justify-between items-center text-[10px] uppercase opacity-70">
+                <span>${perfume.house}</span>
+                <span>${perfume.volume}</span>
+              </div>
+              
+              <div class="flex items-start justify-between gap-2">
+                <h3 class="text-[11px] sm:text-xs font-semibold uppercase tracking-tight text-black line-clamp-2 leading-snug flex-1 font-sans">
+                  ${perfume.title}
+                </h3>
+                <span class="text-[11px] sm:text-xs font-semibold text-black shrink-0 font-sans">
+                  ${formatINR(perfume.price)}
+                </span>
+              </div>
+
+              <!-- Notes Pill Badges -->
+              <div class="flex flex-wrap gap-1 pt-1">
+                ${perfume.notes.map(n => `
+                  <span class="text-[9px] border border-black/40 px-1 py-0.2 uppercase">${n}</span>
+                `).join('')}
+              </div>
+            </div>
+
+          </div>
+        `;
+      }).join('');
+
+      lucide.createIcons();
+    }
+
+    /* ================= FILTERS LOGIC ================= */
+    function openFilterDrawer() {
+      document.getElementById('drawerPriceRange').value = appliedFilters.maxPrice;
+      document.getElementById('drawerPriceLabel').textContent = formatINR(appliedFilters.maxPrice);
+
+      const radio = document.querySelector(`input[name="drawerCondition"][value="${appliedFilters.condition}"]`);
+      if (radio) radio.checked = true;
+
+      document.querySelectorAll('input[name="drawerNotes"]').forEach(cb => {
+        cb.checked = appliedFilters.notes.includes(cb.value);
+      });
+
+      document.getElementById('filterDrawer').classList.remove('hidden');
+      document.body.style.overflow = 'hidden';
+      lucide.createIcons();
+    }
+
+    function closeFilterDrawer() {
+      document.getElementById('filterDrawer').classList.add('hidden');
+      document.body.style.overflow = '';
+    }
+
+    function handleDrawerPriceChange(val) {
+      document.getElementById('drawerPriceLabel').textContent = formatINR(parseInt(val, 10));
+    }
+
+    function selectDrawerConcentration(conc) {
+      const btns = document.querySelectorAll('.drawer-conc-btn');
+      if (appliedFilters.concentration === conc) {
+        appliedFilters.concentration = null;
+        btns.forEach(b => b.classList.remove('bg-black', 'text-white'));
+      } else {
+        appliedFilters.concentration = conc;
+        btns.forEach(b => {
+          if (b.dataset.conc === conc) b.classList.add('bg-black', 'text-white');
+          else b.classList.remove('bg-black', 'text-white');
+        });
+      }
+    }
+
+    function applyFiltersFromDrawer() {
+      appliedFilters.maxPrice = parseInt(document.getElementById('drawerPriceRange').value, 10);
+      appliedFilters.condition = document.querySelector('input[name="drawerCondition"]:checked').value;
+      
+      const selectedNotes = [];
+      document.querySelectorAll('input[name="drawerNotes"]:checked').forEach(cb => selectedNotes.push(cb.value));
+      appliedFilters.notes = selectedNotes;
+
+      closeFilterDrawer();
+      renderProducts();
+      updateFilterSummaryUI();
+    }
+
+    function resetAllFilters() {
+      appliedFilters = {
+        maxPrice: 35000,
+        condition: 'ALL',
+        notes: [],
+        concentration: null,
+        search: ''
+      };
+      document.querySelectorAll('.drawer-conc-btn').forEach(b => b.classList.remove('bg-black', 'text-white'));
+      document.getElementById('headerSearchInput').value = '';
+      const mInput = document.getElementById('mobileSearchInput');
+      if (mInput) mInput.value = '';
+
+      renderProducts();
+      updateFilterSummaryUI();
+    }
+
+    function updateFilterSummaryUI() {
+      let count = 0;
+      if (appliedFilters.maxPrice < 35000) count++;
+      if (appliedFilters.condition !== 'ALL') count++;
+      if (appliedFilters.notes.length > 0) count += appliedFilters.notes.length;
+      if (appliedFilters.concentration) count++;
+      if (appliedFilters.search) count++;
+
+      const badge = document.getElementById('activeFilterBadge');
+      const clearBtn = document.getElementById('quickClearFiltersBtn');
+      const tagsContainer = document.getElementById('activeTagsContainer');
+
+      if (count > 0) {
+        badge.textContent = count;
+        badge.classList.remove('hidden');
+        clearBtn.classList.remove('hidden');
+        tagsContainer.classList.remove('hidden');
+
+        const tags = [];
+        if (appliedFilters.search) tags.push(`Query: "${appliedFilters.search}"`);
+        if (appliedFilters.maxPrice < 35000) tags.push(`Under ${formatINR(appliedFilters.maxPrice)}`);
+        if (appliedFilters.condition === 'BRAND_NEW') tags.push('10/10 Sealed');
+        if (appliedFilters.condition === 'PRE_LOVED') tags.push('Partials / Vintage');
+        if (appliedFilters.concentration) tags.push(appliedFilters.concentration);
+        appliedFilters.notes.forEach(n => tags.push(`Note: ${n}`));
+
+        tagsContainer.innerHTML = tags.map(t => `
+          <span class="inline-flex items-center gap-1 border border-black bg-white px-2 py-0.5 text-[10px]">
+            <span>${t}</span>
+          </span>
+        `).join('') + `<button onclick="resetAllFilters()" class="underline ml-2 text-[10px]">Reset All</button>`;
+      } else {
+        badge.classList.add('hidden');
+        clearBtn.classList.add('hidden');
+        tagsContainer.classList.add('hidden');
+      }
+    }
+
+    function quickFilterTier(tier) {
+      appliedFilters.condition = tier;
+      document.getElementById('currentBreadcrumb').textContent = tier === 'BRAND_NEW' ? 'SEALED FLACONS' : 'VINTAGE PARTIALS';
+      document.getElementById('catalogHeaderTitle').textContent = tier === 'BRAND_NEW' ? 'SEALED NICHE FLACONS' : 'VINTAGE & PARTIAL ARCHIVE';
+      renderProducts();
+      updateFilterSummaryUI();
+    }
+
+    function quickFilterNote(note) {
+      appliedFilters.notes = [note];
+      document.getElementById('currentBreadcrumb').textContent = `${note.toUpperCase()} ACCORDS`;
+      document.getElementById('catalogHeaderTitle').textContent = `${note.toUpperCase()} COLLECTION`;
+      renderProducts();
+      updateFilterSummaryUI();
+    }
+
+    function quickFilterConcentration(conc) {
+      appliedFilters.concentration = conc;
+      document.getElementById('currentBreadcrumb').textContent = conc.toUpperCase();
+      document.getElementById('catalogHeaderTitle').textContent = conc.toUpperCase();
+      renderProducts();
+      updateFilterSummaryUI();
+    }
+
+    function quickFilterMenu(tag) {
+      if (tag === 'SALE') {
+        quickFilterTier('PRE_LOVED');
+      } else {
+        goHome();
+      }
+    }
+
+    function handleSearch(val) {
+      appliedFilters.search = val.trim();
+      renderProducts();
+      updateFilterSummaryUI();
+    }
+
+    function toggleSearchBar() {
+      const input = document.getElementById('headerSearchInput');
+      input.classList.toggle('hidden');
+      if (!input.classList.contains('hidden')) input.focus();
+    }
+
+    function toggleMobileSearch() {
+      const bar = document.getElementById('mobileSearchBar');
+      bar.classList.toggle('hidden');
+      if (!bar.classList.contains('hidden')) document.getElementById('mobileSearchInput').focus();
+    }
+
+    function toggleMobileNav(open) {
+      const drawer = document.getElementById('mobileNavDrawer');
+      if (open) {
+        drawer.classList.remove('hidden');
+        document.body.style.overflow = 'hidden';
+      } else {
+        drawer.classList.add('hidden');
+        document.body.style.overflow = '';
+      }
+      lucide.createIcons();
+    }
+
+    function handleSort(order) {
+      if (order === 'price-low') perfumes.sort((a, b) => a.price - b.price);
+      if (order === 'price-high') perfumes.sort((a, b) => b.price - a.price);
+      renderProducts();
+    }
+
+    /* ================= PERFUME QUICK VIEW INSPECTOR ================= */
+    function openPerfumeDetail(id) {
+      const perfume = perfumes.find(p => p.id === id);
+      if (!perfume) return;
+
+      activeQuickViewPerfume = perfume;
+
+      const img = document.getElementById('detailImage');
+      img.src = perfume.image;
+      img.onerror = () => { img.src = perfume.fallbackSvg; };
+
+      document.getElementById('detailBadge').textContent = perfume.grade;
+      document.getElementById('detailHouse').textContent = perfume.house;
+      document.getElementById('detailVolume').textContent = `${perfume.volume} // ${perfume.concentration}`;
+      document.getElementById('detailTitle').textContent = perfume.title;
+      document.getElementById('detailPrice').textContent = formatINR(perfume.price);
+      document.getElementById('detailMRP').textContent = formatINR(perfume.mrp);
+      document.getElementById('detailSavings').textContent = `SAVE ${formatINR(perfume.mrp - perfume.price)}`;
+      document.getElementById('detailTopNotes').textContent = perfume.topNotes;
+      document.getElementById('detailHeartNotes').textContent = perfume.heartNotes;
+      document.getElementById('detailBaseNotes').textContent = perfume.baseNotes;
+      document.getElementById('detailFillLevel').textContent = perfume.fillLevel;
+      document.getElementById('detailBatchCode').textContent = `Batch: ${perfume.batchCode}`;
+      document.getElementById('detailDescription').textContent = perfume.description;
+
+      const isWish = wishlist.includes(perfume.id);
+      document.getElementById('detailWishlistBtnText').textContent = isWish ? 'Remove from Wishlist' : 'Add to Wishlist';
+
+      document.getElementById('perfumeDetailModal').classList.remove('hidden');
+      document.body.style.overflow = 'hidden';
+      lucide.createIcons();
+    }
+
+    function closePerfumeDetailModal() {
+      document.getElementById('perfumeDetailModal').classList.add('hidden');
+      document.body.style.overflow = '';
+      activeQuickViewPerfume = null;
+    }
+
+    function addDetailToBag() {
+      if (!activeQuickViewPerfume) return;
+      addToCart(activeQuickViewPerfume.id);
+      closePerfumeDetailModal();
+      toggleCartDrawer(true);
+    }
+
+    function toggleDetailWishlist() {
+      if (!activeQuickViewPerfume) return;
+      toggleWishlist(activeQuickViewPerfume.id);
+      const isWish = wishlist.includes(activeQuickViewPerfume.id);
+      document.getElementById('detailWishlistBtnText').textContent = isWish ? 'Remove from Wishlist' : 'Add to Wishlist';
+    }
+
+    /* ================= WISHLIST & CART ================= */
+    function toggleWishlist(id) {
+      const idx = wishlist.indexOf(id);
+      if (idx > -1) wishlist.splice(idx, 1);
+      else wishlist.push(id);
+      document.getElementById('wishlistCountBadge').textContent = wishlist.length;
+      document.getElementById('wishlistModalCount').textContent = wishlist.length;
+      renderProducts();
+      renderWishlistItems();
+    }
+
+    function toggleWishlistModal() {
+      const modal = document.getElementById('wishlistModal');
+      modal.classList.toggle('hidden');
+      renderWishlistItems();
+      lucide.createIcons();
+    }
+
+    function renderWishlistItems() {
+      const container = document.getElementById('wishlistContainer');
+      const items = perfumes.filter(p => wishlist.includes(p.id));
+      if (!items.length) {
+        container.innerHTML = '<div class="text-center py-6 opacity-60">No saved perfumes</div>';
+        return;
+      }
+      container.innerHTML = items.map(i => `
+        <div class="flex items-center justify-between border-b border-black pb-2">
+          <div class="flex items-center gap-2">
+            <img src="${i.image}" onerror="this.onerror=null; this.src='${i.fallbackSvg}';" class="w-10 h-10 object-contain" />
+            <span class="text-[11px] truncate max-w-[180px]">${i.title}</span>
+          </div>
+          <button onclick="addToCart('${i.id}')" class="border border-black px-2 py-0.5 text-[10px] uppercase font-bold">+ Bag</button>
+        </div>
+      `).join('');
+    }
+
+    function addToCart(id) {
+      const perfume = perfumes.find(p => p.id === id);
+      if (!perfume) return;
+      cart.push(perfume);
+      updateCartUI();
+    }
+
+    function toggleCartDrawer(open) {
+      const drawer = document.getElementById('cartDrawer');
+      if (open) {
+        drawer.classList.remove('hidden');
+        document.body.style.overflow = 'hidden';
+      } else {
+        drawer.classList.add('hidden');
+        document.body.style.overflow = '';
+      }
+      updateCartUI();
+      lucide.createIcons();
+    }
+
+    function updateCartUI() {
+      document.getElementById('cartCountBadge').textContent = cart.length;
+      document.getElementById('cartDrawerCount').textContent = cart.length;
+      const container = document.getElementById('cartItemsContainer');
+
+      if (!cart.length) {
+        container.innerHTML = '<div class="text-center py-10 opacity-50">Your fragrance bag is empty</div>';
+      } else {
+        container.innerHTML = cart.map((item, idx) => `
+          <div class="flex items-center justify-between border-b border-black pb-3">
+            <div class="flex items-center gap-3">
+              <img src="${item.image}" onerror="this.onerror=null; this.src='${item.fallbackSvg}';" class="w-12 h-12 object-contain" />
+              <div>
+                <div class="font-semibold text-xs truncate max-w-[180px]">${item.title}</div>
+                <div class="text-[10px] opacity-70">${item.volume} // ${item.grade}</div>
+                <div class="text-[11px] font-semibold">${formatINR(item.price)}</div>
+              </div>
+            </div>
+            <button onclick="removeFromCart(${idx})" class="p-1 hover:opacity-60"><i data-lucide="trash-2" class="w-3.5 h-3.5"></i></button>
+          </div>
+        `).join('');
+      }
+
+      const total = cart.reduce((acc, c) => acc + c.price, 0);
+      document.getElementById('cartSubtotal').textContent = formatINR(total);
+      document.getElementById('cartTotal').textContent = formatINR(total);
+      lucide.createIcons();
+    }
+
+    function removeFromCart(idx) {
+      cart.splice(idx, 1);
+      updateCartUI();
+    }
+
+    /* ================= SELLER / CONSIGN MODAL ================= */
+    function openSellerModal() {
+      document.getElementById('sellerModal').classList.remove('hidden');
+      document.body.style.overflow = 'hidden';
+      lucide.createIcons();
+    }
+    function closeSellerModal() {
+      document.getElementById('sellerModal').classList.add('hidden');
+      document.body.style.overflow = '';
+    }
+
+    function handleSellerSubmit(e) {
+      e.preventDefault();
+      const house = document.getElementById('sellerHouse').value;
+      const title = document.getElementById('sellerTitle').value;
+      const volume = document.getElementById('sellerVolume').value;
+      const concentration = document.getElementById('sellerConcentration').value;
+      const fill = document.getElementById('sellerFill').value;
+      const price = parseInt(document.getElementById('sellerPrice').value, 10);
+      const mrp = parseInt(document.getElementById('sellerMRP').value, 10);
+
+      const fallback = getSvgBottle(title.slice(0, 9).toUpperCase(), house.slice(0, 10).toUpperCase(), '#1a1a1a');
+
+      perfumes.unshift({
+        id: 'flacon-' + Date.now(),
+        house,
+        title: `${title} (${volume})`,
+        volume,
+        concentration,
+        category: fill.includes('Sealed') ? 'BRAND_NEW' : 'PRE_LOVED',
+        grade: fill,
+        price,
+        mrp,
+        fillLevel: fill,
+        batchCode: 'BATCH-VERIFIED',
+        notes: ['Amber', 'Vanilla'],
+        topNotes: 'Bergamot, Spices',
+        heartNotes: 'Rich Florals, Resin',
+        baseNotes: 'Sandalwood, Musks',
+        description: 'Consigned by private collector. Tested for authentic atomizer seal and formulation consistency.',
+        image: fallback,
+        fallbackSvg: fallback
+      });
+
+      renderProducts();
+      closeSellerModal();
+      document.getElementById('sellerForm').reset();
+    }
+  </script>
+</body>
+</html>
